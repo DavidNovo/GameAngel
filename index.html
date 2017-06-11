@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="breakoutCanvas" width="480" height="320"></canvas>
+
+<script>
+	// JavaScript code goes here
+  // grab reference to canvas
+  var canvas = document.getElementById("breakoutCanvas");
+  var renderingContext = canvas.getContext("2d");
+
+  renderingContext.beginPath();
+renderingContext.rect(20, 40, 50, 50);
+renderingContext.fillStyle = "#FF0000";
+renderingContext.fill();
+renderingContext.closePath();
+
+renderingContext.beginPath();
+renderingContext.arc(240, 160, 20, 0, Math.PI*2, false);
+renderingContext.fillStyle = "yellow";
+renderingContext.fill();
+renderingContext.closePath();
+
+renderingContext.beginPath();
+renderingContext.rect(160, 10, 100, 40);
+renderingContext.strokeStyle = "rgba(0, 0, 255, 0.5)";
+renderingContext.stroke();
+renderingContext.closePath();
+</script>
+
+</body>
+</html>
