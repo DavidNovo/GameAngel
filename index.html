@@ -22,12 +22,27 @@
   var dx = 2;
   var dy = -2;
 
+  // used for collisions
+  var ballRadius = 10;
+
+  // initial color of the ball
+  var ballColor = "#0095DD";
+
   function drawBall() {
       renderingContext.beginPath();
-      renderingContext.arc(x, y, 10, 0, Math.PI*2);
-      renderingContext.fillStyle = "#0095DD";
+      renderingContext.arc(x, y, ballRadius, 0, Math.PI*2);
+      renderingContext.fillStyle = ballColor;
       renderingContext.fill();
       renderingContext.closePath();
+  }
+
+  function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++ ) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
   }
 
   function draw() {
@@ -35,6 +50,15 @@
       drawBall();
       x += dx;
       y += dy;
+      if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+        ballColor = getRandomColor();
+      }
+      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius ) {
+        dx = -dx;
+        ballColor = getRandomColor();
+      }
+
   }
 
   setInterval(draw, 30);
