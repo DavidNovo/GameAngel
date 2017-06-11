@@ -14,6 +14,10 @@
 
 <script>
 	// JavaScript code goes here
+  //
+  // VARIABLES
+  //
+
   // grab reference to canvas
   var canvas = document.getElementById("breakoutCanvas");
   var renderingContext = canvas.getContext("2d");
@@ -28,7 +32,63 @@
   // initial color of the ball
   var ballColor = "#0095DD";
 
-  function drawBall() {
+// characteristics of the paddle
+var paddleHeight = 10;
+var paddleWidth = 75;
+var paddlePos = (canvas.width-paddleWidth)/2
+
+var rightPressed = false;
+var leftPressed = false;
+
+//
+// end of VARIABLES
+//
+
+// n.b. missing variables of functions will cause
+// the thing to break, with no error message
+// use wishful thinking
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+  // when a key is pressed
+  if(e.keyCode == 39) {
+      rightPressed = true;
+  }
+  else if(e.keyCode == 37) {
+      leftPressed = true;
+  }
+}
+
+function keyUpHandler(e) {
+    // when up key is released
+    if(e.keyCode == 39) {
+      rightPressed = false;
+  }
+  else if(e.keyCode == 37) {
+      leftPressed = false;
+  }
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function drawPaddle() {
+  renderingContext.beginPath();
+  renderingContext.rect(paddlePos, canvas.height-paddleHeight,
+    paddleWidth, paddleHeight);
+  renderingContext.fillStyle = "#0095DD";
+  renderingContext.fill();
+  renderingContext.closePath();
+}
+
+function drawBall() {
       renderingContext.beginPath();
       renderingContext.arc(x, y, ballRadius, 0, Math.PI*2);
       renderingContext.fillStyle = ballColor;
@@ -36,18 +96,12 @@
       renderingContext.closePath();
   }
 
-  function getRandomColor() {
-      var letters = '0123456789ABCDEF';
-      var color = '#';
-      for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-  }
+
 
   function draw() {
       renderingContext.clearRect(0, 0, canvas.width, canvas.height);
       drawBall();
+      drawPaddle();
       x += dx;
       y += dy;
       if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
@@ -58,10 +112,15 @@
         dx = -dx;
         ballColor = getRandomColor();
       }
-
+      // paddle control
+      if(rightPressed && paddlePos < canvas.width-paddleWidth) {
+        paddlePos += 7;
+      }
+        else if(leftPressed && paddlePos > 0) {
+          paddlePos -= 7;
+        }
   }
-
-  setInterval(draw, 30);
+  setInterval(draw, 10);
 </script>
 
 </body>
