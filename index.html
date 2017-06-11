@@ -17,24 +17,27 @@
   // grab reference to canvas
   var canvas = document.getElementById("breakoutCanvas");
   var renderingContext = canvas.getContext("2d");
+  var x = canvas.width/2;
+  var y = canvas.height-30;
+  var dx = 2;
+  var dy = -2;
 
-  renderingContext.beginPath();
-renderingContext.rect(20, 40, 50, 50);
-renderingContext.fillStyle = "#FF0000";
-renderingContext.fill();
-renderingContext.closePath();
+  function drawBall() {
+      renderingContext.beginPath();
+      renderingContext.arc(x, y, 10, 0, Math.PI*2);
+      renderingContext.fillStyle = "#0095DD";
+      renderingContext.fill();
+      renderingContext.closePath();
+  }
 
-renderingContext.beginPath();
-renderingContext.arc(240, 160, 20, 0, Math.PI*2, false);
-renderingContext.fillStyle = "yellow";
-renderingContext.fill();
-renderingContext.closePath();
+  function draw() {
+      renderingContext.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+      x += dx;
+      y += dy;
+  }
 
-renderingContext.beginPath();
-renderingContext.rect(160, 10, 100, 40);
-renderingContext.strokeStyle = "rgba(0, 0, 255, 0.5)";
-renderingContext.stroke();
-renderingContext.closePath();
+  setInterval(draw, 30);
 </script>
 
 </body>
