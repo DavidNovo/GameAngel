@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<canvas id="breakoutCanvas" width="480" height="320"></canvas>
+<canvas id="breakoutCanvas" width="480" height="600"></canvas>
 
 <script>
 	// JavaScript code goes here
@@ -40,6 +40,23 @@ var paddlePos = (canvas.width-paddleWidth)/2
 var rightPressed = false;
 var leftPressed = false;
 
+// the brick wall
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+
+var bricks = [];
+for (col = 0; col < brickColumnCount; col++) {
+  bricks[col] = [];
+    for (row = 0; row < brickRowCount; row++) {
+      bricks[col][row] = {x: 0, y:0 };
+    }
+}
+
 //
 // end of VARIABLES
 //
@@ -49,6 +66,22 @@ var leftPressed = false;
 // use wishful thinking
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+
+function drawBricks() {
+    for(col = 0; col < brickColumnCount; col++) {
+      for (row = 0; row < brickRowCount; row++) {
+          var brickX = (col*(brickWidth+brickPadding))+brickOffsetLeft;
+          var brickY = (row*(brickHeight+brickPadding))+brickOffsetTop;
+          bricks[col][row].x = brickX;
+          bricks[col][row].y = brickY;
+          renderingContext.beginPath();
+          renderingContext.rect(brickX, brickY, brickWidth, brickHeight);
+          renderingContext.fillStyle = "#0095DD";
+          renderingContext.fill();
+          renderingContext.closePath();
+      }
+    }
+}
 
 function keyDownHandler(e) {
   // when a key is pressed
@@ -100,6 +133,7 @@ function drawBall() {
 
   function draw() {
       renderingContext.clearRect(0, 0, canvas.width, canvas.height);
+      drawBricks();
       drawBall();
       drawPaddle();
       x += dx;
