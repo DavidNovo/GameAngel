@@ -49,11 +49,12 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 
+// this is brick work, a data structure containning bricks
 var bricks = [];
 for (col = 0; col < brickColumnCount; col++) {
   bricks[col] = [];
     for (row = 0; row < brickRowCount; row++) {
-      bricks[col][row] = {x: 0, y:0 };
+      bricks[col][row] = {x: 0, y:0, status: 1 };
     }
 }
 
@@ -70,6 +71,7 @@ document.addEventListener("keyup", keyUpHandler, false);
 function drawBricks() {
     for(col = 0; col < brickColumnCount; col++) {
       for (row = 0; row < brickRowCount; row++) {
+        if (bricks[col][row].status == 1) {
           var brickX = (col*(brickWidth+brickPadding))+brickOffsetLeft;
           var brickY = (row*(brickHeight+brickPadding))+brickOffsetTop;
           bricks[col][row].x = brickX;
@@ -79,6 +81,7 @@ function drawBricks() {
           renderingContext.fillStyle = "#0095DD";
           renderingContext.fill();
           renderingContext.closePath();
+        }
       }
     }
 }
@@ -108,8 +111,14 @@ function collisionDetection() {
       for (var r = 0; r < brickRowCount; r++) {
         var b = bricks[c][r];
         // colision calculations
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight )
-        dy = -dy;
+        // remember to check for status of brick !!
+        if (b.status == 1) {
+          if (x > b.x && x < b.x + brickWidth &&
+            y > b.y && y < b.y + brickHeight ) {
+              dy = -dy;
+              b.status = 0;
+            }
+        }
       }
     }
 }
@@ -142,6 +151,7 @@ function drawBall() {
 
 
 
+// this is the main function
   function draw() {
       renderingContext.clearRect(0, 0, canvas.width, canvas.height);
       drawBricks();
@@ -158,8 +168,8 @@ function drawBall() {
           dy =-dy;
         }
         else {
-          //alert("GAME OVER");
-          //document.location.reload();
+          alert("GAME OVER");
+          document.location.reload();
         }
       }
       if (x + dx > canvas.width - ballRadius || x + dx < ballRadius ) {
