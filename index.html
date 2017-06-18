@@ -49,6 +49,11 @@ var brickPadding = 10;
 var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 
+var score = 0;
+//
+// end of VARIABLES
+//
+
 // this is brick work, a data structure containning bricks
 var bricks = [];
 for (col = 0; col < brickColumnCount; col++) {
@@ -58,9 +63,7 @@ for (col = 0; col < brickColumnCount; col++) {
     }
 }
 
-//
-// end of VARIABLES
-//
+
 
 // n.b. missing variables of functions will cause
 // the thing to break, with no error message
@@ -106,7 +109,7 @@ function keyUpHandler(e) {
   }
 }
 
-function collisionDetection() {
+function collisionDetectionAndScoring() {
     for (var c = 0; c < brickColumnCount; c++) {
       for (var r = 0; r < brickRowCount; r++) {
         var b = bricks[c][r];
@@ -117,6 +120,12 @@ function collisionDetection() {
             y > b.y && y < b.y + brickHeight ) {
               dy = -dy;
               b.status = 0;
+              score++;
+              // did I win?
+              if (score == brickRowCount * brickColumnCount) {
+                alert('You win, good job');
+                document.location.reload();
+              }
             }
         }
       }
@@ -149,6 +158,11 @@ function drawBall() {
       renderingContext.closePath();
   }
 
+function drawScore() {
+  renderingContext.font = "16px Arial";
+  renderingContext.fillStyle = "#0095DD";
+  renderingContext.fillText("Score: " + score, 8, 20);
+}
 
 
 // this is the main function
@@ -157,7 +171,8 @@ function drawBall() {
       drawBricks();
       drawBall();
       drawPaddle();
-      collisionDetection();
+      drawScore();
+      collisionDetectionAndScoring();
       x += dx;
       y += dy;
       if ( y + dy < ballRadius) {
