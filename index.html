@@ -226,8 +226,10 @@ function drawPlayerLives() {
         else if(leftPressed && paddlePos > 0) {
           paddlePos -= 7;
         }
+    requestAnimationFrame(draw);
   }
-  setInterval(draw, 10);
+draw();
+
 </script>
 
 </body>
