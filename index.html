@@ -51,6 +51,8 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 
 var score = 0;
+
+var playerLives = 3;
 //
 // end of VARIABLES
 //
@@ -174,6 +176,11 @@ function drawScore() {
   renderingContext.fillText("Score: " + score, 8, 20);
 }
 
+function drawPlayerLives() {
+  renderingContext.font = "16ps Arial";
+  renderingContext.fillStyle = "#0095DD";
+  renderingContext.fillText("lives: " + playerLives, canvas.width-65, 20);
+}
 
 // this is the main function
   function draw() {
@@ -182,6 +189,7 @@ function drawScore() {
       drawBall();
       drawPaddle();
       drawScore();
+      drawPlayerLives();
       collisionDetectionAndScoring();
       x += dx;
       y += dy;
@@ -193,8 +201,18 @@ function drawScore() {
           dy =-dy;
         }
         else {
-          alert("GAME OVER");
-          document.location.reload();
+          // make sure the player has not used up their lives
+          playerLives--;
+          if (!playerLives) {
+            alert("GAME OVER");
+            document.location.reload();
+          } else {
+            x = canvas.width/2;
+            y = canvas.height-30;
+            dx = 2;
+            dy = -2;
+            paddlePos = (canvas.width-paddleWidth)/2;
+          }
         }
       }
       if (x + dx > canvas.width - ballRadius || x + dx < ballRadius ) {
